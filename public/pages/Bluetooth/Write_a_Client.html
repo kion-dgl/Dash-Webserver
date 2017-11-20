@@ -1,0 +1,76 @@
+<p>In the first tutorial, we will start with a simple client that
+will look for other bluetooth devices which are in discover mode
+and list them.</p>
+
+<pre data-file="main.c">
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <bluetooth/bluetooth.h>
+#include <bluetooth/hci.h>
+#include <bluetooth/hci_lib.h>
+
+int main(int argc, char *argv[]) {
+
+	int i;
+	inquiry_info *ii = NULL;
+	int max_rsp, num_rsp;
+	int deviceId, btSocket, len, flags;
+
+	char addr[19] = { 0 };
+	char name[248] = { 0 };
+
+	deviceId = hci_get_route(NULL);
+	btSocket = hci_open_dev(deviceId);
+	
+	if(deviceId < 0 || btSocket < 0) {
+
+		perror("Opening btSocketet");
+		return 1;
+
+	}
+
+	len = 8;
+	max_rsp = 255;
+	flags = IREQ_CACHE_FLUSH;
+	ii = (inquiry_info*)malloc(max_rsp * sizeof(inquiry_info));
+
+	num_rsp = hci_inquiry(deviceId, len, max_rsp, NULL, &ii, flags);
+
+	if(num_rsp < 0) {
+		perror("hci inquiry");
+	}
+
+	for(i = 0; i < num_rsp; i++) {
+		
+		ba2str(&(ii+i)->bdaddr, addr);
+		memset(name, 0, sizeof(name));
+		if(hci_read_remote_name(btSocket, &(ii+i)->bdaddr, sizeof(name), name, 0) < 0) {
+			strcpy(name, "[unknown]");
+		}
+
+		printf("%s %s\n", addr, name);
+
+	}
+
+	free(ii);
+	close(btSocket);
+
+	return 0;
+
+}
+
+</pre>
+
+<p>
+Compile:
+</p>
+
+<pre>$ gcc -o simple_scan simple_scan.c -lbluetooth</pre>
+
+<p>
+Run with:
+</p>
+
+<pre>$ ./a.out</pre>

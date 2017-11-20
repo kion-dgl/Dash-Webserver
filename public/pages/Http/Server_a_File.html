@@ -1,0 +1,27 @@
+<p>
+In the next tutorial, we will write out the source of the
+path to be able to start serving files later on.
+</p>
+
+<pre fata-file="main.c">
+#include &lt;stdio.h&gt;
+
+int main(int argc, char *argv[]) {
+		
+	char path[50];
+
+	scanf("%s", path);
+	printf("Hello, %s!\n", path);
+
+}
+</pre>
+
+<p>
+Compile with:
+</p>
+
+<pre>$ gcc main.c</pre>
+
+<p>Run with:</p>
+
+<pre>$ ./a.out</pre>

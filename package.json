@@ -1,0 +1,21 @@
+{
+  "name": "dash-webserver",
+  "version": "0.1.0",
+  "description": "A simple blogging outline that manages a blog with text files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "blog",
+    "nodejs",
+    "dash"
+  ],
+  "author": "Benjamin Collins",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.15.4",
+    "sprintf": "^0.1.5"
+  }
+}
